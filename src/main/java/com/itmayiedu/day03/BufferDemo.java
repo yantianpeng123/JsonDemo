@@ -4,15 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.StandardSocketOptions;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.nio.channels.FileChannel.MapMode;
 
 /**
  * 缓冲区的概念：
@@ -108,15 +105,15 @@ public class BufferDemo {
         //创建写的管道
         FileChannel open1 = FileChannel.open(Paths.get("/Users/yantianpeng/Desktop/2.png"), StandardOpenOption.READ,StandardOpenOption.WRITE, StandardOpenOption.CREATE);
         //定义映射文件直接操作缓存区
-        MappedByteBuffer inmappedByteBuffer = open.map(FileChannel.MapMode.READ_ONLY, 0, open.size());
-        MappedByteBuffer outmappedByteBuffer1 = open1.map(FileChannel.MapMode.READ_WRITE, 0, open1.size());
-        System.out.println(outmappedByteBuffer1.capacity());
+        MappedByteBuffer inmappedByteBuffer = open.map(MapMode.READ_ONLY, 0, open.size());
+        MappedByteBuffer outmappedByteBuffer1 = open1.map(MapMode.READ_WRITE, 0, open1.size());
         //直接缓存去操作；
         byte[] bytes = new byte[inmappedByteBuffer.limit()];
         inmappedByteBuffer.get(bytes);
         outmappedByteBuffer1.put(bytes);
         open.close();
         open1.close();
+
 
     }
 }
