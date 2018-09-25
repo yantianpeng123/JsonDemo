@@ -4,9 +4,14 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.nio.channels.FileChannel.MapMode;
@@ -75,10 +80,11 @@ public class BufferDemo {
     //非直接缓存区读写操作
     @Test
     public void test03()throws Exception{
+        long startTime =System.currentTimeMillis();
         //读入流
-        FileInputStream fileInputStream = new FileInputStream("/Users/yantianpeng/Desktop/11.png");
+        FileInputStream fileInputStream = new FileInputStream("/Users/yantianpeng/Desktop/1.mp4");
         //写入流
-        FileOutputStream fileOutputStream = new FileOutputStream("/Users/yantianpeng/Desktop/2.png");
+        FileOutputStream fileOutputStream = new FileOutputStream("/Users/yantianpeng/Desktop/2.mp4");
         //创建读入通道
         FileChannel channel = fileInputStream.getChannel();
         //创建写入通道
@@ -95,25 +101,83 @@ public class BufferDemo {
         channel.close();
         fileOutputStream.close();
         fileOutputStream.close();
+        long endTime = System.currentTimeMillis();
+        System.out.println("非直接缓冲区耗时时间：===========>>>>>>>"+(endTime-startTime));
     }
 
     //直接缓存区读写操作
     @Test
     public void test04() throws Exception{
+        long startTime = System.currentTimeMillis();
         //创建读的管道
-        FileChannel open = FileChannel.open(Paths.get("/Users/yantianpeng/Desktop/11.png"), StandardOpenOption.READ);
+        FileChannel open = FileChannel.open(Paths.get("/Users/yantianpeng/Desktop/1.mp4"), StandardOpenOption.READ);
         //创建写的管道
-        FileChannel open1 = FileChannel.open(Paths.get("/Users/yantianpeng/Desktop/2.png"), StandardOpenOption.READ,StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+        FileChannel open1 = FileChannel.open(Paths.get("/Users/yantianpeng/Desktop/2.mp4"), StandardOpenOption.READ,StandardOpenOption.WRITE, StandardOpenOption.CREATE);
         //定义映射文件直接操作缓存区
         MappedByteBuffer inmappedByteBuffer = open.map(MapMode.READ_ONLY, 0, open.size());
-        MappedByteBuffer outmappedByteBuffer1 = open1.map(MapMode.READ_WRITE, 0, open1.size());
+        MappedByteBuffer outmappedByteBuffer1 = open1.map(MapMode.READ_WRITE, 0, open.size());
         //直接缓存去操作；
         byte[] bytes = new byte[inmappedByteBuffer.limit()];
         inmappedByteBuffer.get(bytes);
         outmappedByteBuffer1.put(bytes);
+        long endTime = System.currentTimeMillis();
+        System.out.println("直接缓存区耗时时间：==============>>>>>>>"+(endTime-startTime));
         open.close();
         open1.close();
+    }
 
+    /**
+     * 非散读取：将通道中的数据分散到多个缓冲区中。
+     * 聚集写入：将多个缓存区的数据聚集到通道中。
+     */
+@Test
+    public void test05() throws  Exception{
+        //随机访问
+        RandomAccessFile randomAccessFile = new RandomAccessFile("/Users/yantianpeng/Desktop/1.txt", "rw");
+        //获取通道
+        FileChannel channel = randomAccessFile.getChannel();
+        //分配指定大小指定缓存区
+        ByteBuffer allocate1 = ByteBuffer.allocate(100);
+        ByteBuffer allocate2 = ByteBuffer.allocate(1024);
+        ByteBuffer [] bufs= {allocate1,allocate2};
+        channel.read(bufs);
+        for (ByteBuffer byteBuffer: bufs) {
+                byteBuffer.flip();//开启读写模式
+        }
+        String string =new java.lang.String(bufs[0].array(),0,bufs[0].limit());
+        System.out.println(string);
+        System.out.println("=======================================");
+        System.out.println(new String(bufs[1].array(),1,bufs[1].limit()));
+        System.out.println("==========>>>>>>>>>>>聚集读写操作");
+        RandomAccessFile randomAccessFile1 = new RandomAccessFile("/Users/yantianpeng/Desktop/2.txt ", "rw");
+        //获取通道
+        FileChannel channel1 = randomAccessFile1.getChannel();
+        channel1.write(bufs);
+        randomAccessFile1.close();
+        randomAccessFile.close();
+    }
 
+    /**
+     * 编码格式
+     */
+    @Test
+    public void test005() throws  Exception{
+        Charset charset = Charset.forName("UTF-8");//获取编码器
+        CharsetEncoder charsetEncoder = charset.newEncoder();
+        //获取解码器
+        CharsetDecoder charsetDecoder = charset.newDecoder();//获取解码器
+        CharBuffer allocate = CharBuffer.allocate(1024);
+        allocate.put("蚂蚁课堂牛逼。。。。");
+        allocate.flip();//开启读写模式
+        ByteBuffer encode = charsetEncoder.encode(allocate);
+        for (int i = 0; i < encode.limit(); i++) {
+            System.out.println(encode.get());
+        }
+        //解码
+        encode.flip();
+        //编码解密
+        CharBuffer decode = charsetDecoder.decode(encode);
+//        CharBuffer gbk = Charset.forName("GBK").newDecoder().decode(encode);//当编码格式和解码在在格式不一样的时候会报错好
+ //       System.out.println(gbk.toString());
     }
 }
