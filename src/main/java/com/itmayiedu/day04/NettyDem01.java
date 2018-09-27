@@ -6,7 +6,6 @@ import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
-import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.string.StringDecoder;
 import org.jboss.netty.handler.codec.string.StringEncoder;
@@ -46,14 +45,5 @@ public class NettyDem01 {
         //绑定端口号
         serverBootstrap.bind(new InetSocketAddress(8990));
         System.out.println("Netty服务端启动");
-
-        while (true){
-            try{
-                Thread.sleep(1000);
-                System.out.println("每隔1秒打印一次");
-            }catch (Exception ex){
-
-            }
-        }
     }
 }

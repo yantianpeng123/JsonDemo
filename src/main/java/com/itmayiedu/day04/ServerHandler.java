@@ -9,6 +9,7 @@ public class ServerHandler extends SimpleChannelHandler {
         super.messageReceived(ctx, e);
         System.out.println("================>>>>>>>>>+messageReceived");
         System.out.println("================>>>>>>>>服务端的数据："+e.getMessage());
+        System.out.println(ctx.getChannel().write("服务端回复内容是：你好啊"));
     }
     //接受出现的异常
     @Override
