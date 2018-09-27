@@ -4,13 +4,16 @@ package com.itmayiedu.day04;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * NIO编程客户端
  */
 public class NIOClent1 {
-
+    public static void main(String[] args) throws Exception{
+        test01();
+    }
     public static void test01()throws Exception {
         System.out.println("==================>>>>>>>>>+客户端已经启动");
         //2创建 Socket通道
