@@ -20,7 +20,7 @@
                 ///Users/yantianpeng/Desktop/xmltest.txt;
             //h获取都读取对象。
             SAXReader saxReader = new SAXReader();
-            Document document = saxReader.read("/Users/yantianpeng/Desktop/xmltext.txt");
+            Document document = saxReader.read("/Users/yantianpeng/Desktop/1.xml");
             Element rootElement = document.getRootElement();
             getNodes(rootElement);
 
