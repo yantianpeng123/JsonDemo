@@ -218,7 +218,7 @@
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/yantianpeng/Desktop/IdeaProjects/JsonDemo/src/main/java/com/itmayiedu/day01/TestGit.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539412116080" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539412727730" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -357,7 +357,7 @@
       <workItem from="1539135355082" duration="4193000" />
       <workItem from="1539332878233" duration="125000" />
       <workItem from="1539333368833" duration="1074000" />
-      <workItem from="1539411475948" duration="943000" />
+      <workItem from="1539411475948" duration="1238000" />
     </task>
     <servers />
   </component>
@@ -394,7 +394,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="117605000" />
+    <option name="totallyTimeSpent" value="117900000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
